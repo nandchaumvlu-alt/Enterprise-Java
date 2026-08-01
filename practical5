@@ -1,0 +1,90 @@
+practical5A:-
+index.html:-
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Employee Update</title>
+    </head>
+    <body>
+        <h2>Update Employee</h2>
+        <form action="update.jsp" method="post">
+            Employee No:
+            <input type="text" name="eno"><br><br>
+            Name:
+            <input type="text" name="name"><br><br>
+            Age:
+            <input type="text" name="age"><br><br>
+            Designation:
+            <input type="text" name="designation"><br><br>
+            Salary:
+            <input type="text" name="salary"><br><br>
+            <input type="submit" value="Update">
+        </form>
+    </body>
+</html>
+Display.jsp:-
+<%@page import="java.sql.*"%>
+<%
+    String eno = request.getParameter("eno");
+    String name = request.getParameter("name");
+    String age = request.getParameter("age");
+    String des = request.getParameter("designation");
+    String salary = request.getParameter("salary");
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/company",
+                "root",
+                "root"
+        );
+        PreparedStatement ps = con.prepareStatement(
+               "UPDATE employee SET name=?, age=?, designation=?, salary=? WHERE eno=?");
+        ps.setString(1, name);
+        ps.setInt(2, Integer.parseInt(age));
+        ps.setString(3, des);
+        ps.setDouble(4, Double.parseDouble(salary));
+        ps.setInt(5, Integer.parseInt(eno));
+        int i = ps.executeUpdate();
+        if (i > 0) {
+            out.println("<h2>Record Updated Successfully</h2>");
+        } else {
+            out.println("<h2>Employee Not Found</h2>");
+        }
+        con.close();
+    } catch (Exception e) {
+        out.println(e);
+    }
+%>
+5b:-
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JSP Expression Demo</title>
+    </head>
+    <body>
+        <h2>JSP Expression Language</h2>
+        <p>1. Addition: <%= 10 + 20%></p>
+        <p>2. Multiplication: <%= 5 * 6%></p>
+        <p>3. Division: <%= 20 / 4%></p>
+        <p>4. Current Year: <%= java.time.Year.now()%></p>
+        <p>5. String: <%= "Welcome to JSP"%></p>
+        <p><b> Nandini Chaudhari T006 </b></p>
+    </body>
+</html>
+5c:-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Core Tag Example</title>
+    </head>
+    <body>
+        <c:forEach var = "j" begin="5" end="15">
+            Item <c:out value = "${j}"/><p>        
+            </c:forEach>
+    <p><b> Nandini Chaudhari T006 </b></p>               
+    </body>
+</html>
